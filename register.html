@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Регистрация — AI Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .register-window {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 40px 36px 36px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .top-menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-logo {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+        }
+
+        .menu-logo span {
+            color: #3b82f6;
+        }
+
+        .menu-badge {
+            background: #eef2ff;
+            color: #3b82f6;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .menu-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 16px;
+            cursor: default;
+        }
+
+        .menu-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .menu-status {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .sub {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        .field-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: #0f172a;
+        }
+
+        .field-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+            background: #ffffff;
+        }
+
+        .field-group input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            margin-top: 8px;
+            letter-spacing: 0.2px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .error-msg {
+            background: #fef2f2;
+            color: #b91c1c;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            margin-bottom: 18px;
+            display: none;
+            border-left: 4px solid #ef4444;
+            font-weight: 500;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .footer-stats {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1.5px solid #f1f5f9;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .stat-value .green { color: #22c55e; }
+        .stat-value .blue { color: #3b82f6; }
+        .stat-value .orange { color: #f59e0b; }
+
+        .hint-text {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 16px;
+        }
+
+        .hint-text strong {
+            color: #475569;
+        }
+
+        @media (max-width: 480px) {
+            .register-window {
+                padding: 24px 18px 28px;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .field-group input {
+                padding: 13px 16px;
+                font-size: 15px;
+            }
+
+            .btn-primary {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            .top-menu {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .footer-stats {
+                gap: 4px;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-window">
+    <!-- МЕНЮ -->
+    <div class="top-menu">
+        <div class="menu-left">
+            <div class="menu-logo">AI<span>Chat</span></div>
+            <div class="menu-badge">v2.4</div>
+        </div>
+        <div class="menu-right">
+            <div class="menu-status"><span class="menu-dot"></span> Online</div>
+            <div class="menu-icon">⚙️</div>
+            <div class="menu-icon">👤</div>
+        </div>
+    </div>
+
+    <h1>👋 Добро пожаловать</h1>
+    <p class="sub">Войдите в чат с нейросетью</p>
+
+    <div class="error-msg" id="errorMsg">⚠️ Этот ник уже занят. Попробуйте другой.</div>
+
+    <form id="registerForm">
+        <div class="field-group">
+            <label for="nickname">Ваш никнейм</label>
+            <input type="text" id="nickname" placeholder="Введите имя..." required autofocus minlength="2" maxlength="20">
+        </div>
+        <button type="submit" class="btn-primary">Войти в чат</button>
+    </form>
+
+    <div class="hint-text">
+        💡 Администратор: <strong>ZXC88</strong>
+    </div>
+
+    <div class="footer-stats">
+        <div class="stat-item">
+            <div class="stat-value"><span class="green">▲</span> 1.2k</div>
+            <div class="stat-label">онлайн</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value"><span class="blue">◆</span> 8.4k</div>
+            <div class="stat-label">сообщений</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value"><span class="orange">✦</span> 96%</div>
+            <div class="stat-label">точность</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const form = document.getElementById('registerForm');
+        const input = document.getElementById('nickname');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // Список занятых ников (демо)
+        let usedNames = ['Alex', 'Kate', 'Mike', 'Sofia', 'Elena'];
+        const reserved = ['admin', 'Admin', 'ADMIN', 'root', 'system'];
+
+        // Убираем ZXC88 из занятых, чтобы админ мог войти
+        const adminIdx = usedNames.indexOf('ZXC88');
+        if (adminIdx !== -1) usedNames.splice(adminIdx, 1);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nick = input.value.trim();
+
+            if (nick.length < 2) {
+                errorMsg.textContent = '⚠️ Ник должен содержать хотя бы 2 символа.';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            if (reserved.includes(nick)) {
+                errorMsg.textContent = `⚠️ Ник "${nick}" зарезервирован. Выберите другой.`;
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            if (usedNames.includes(nick)) {
+                errorMsg.textContent = `⚠️ Ник "${nick}" уже используется. Попробуйте другой.`;
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            // Вход
+            const isAdmin = (nick === 'ZXC88');
+            usedNames.push(nick);
+            sessionStorage.setItem('chat_nickname', nick);
+            sessionStorage.setItem('chat_role', isAdmin ? 'admin' : 'user');
+
+            // Перенаправляем в чат
+            window.location.href = 'chat.html';
+        });
+
+        input.addEventListener('input', function() {
+            errorMsg.classList.remove('show');
+        });
+
+        // Если уже есть сессия — сразу в чат
+        if (sessionStorage.getItem('chat_nickname')) {
+            window.location.href = 'chat.html';
+        }
+    })();
+</script>
+
+</body>
+</html>
